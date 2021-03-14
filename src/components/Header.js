@@ -5,17 +5,20 @@ import Button from './Button' //import button component
 
 
 const Header = ({ title }) => {
+    const onClick = () =>{
+        console.log("Click")
+    }
+
     return (
         <header className='header'>
             <h1>{title}</h1>
-            <Button color='green' text='Hello' />
+            <Button color='green' text='Add' onCLick={onClick}/>
         </header>
     )
 }
 
 Header.defaultProps = {
     title: "Task Tracker",
-    titleDescription: "A tracker of tasks!"
 }
 
 
