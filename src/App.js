@@ -37,8 +37,11 @@ const deleteTask = (id) => {
   return (
     <div className='container'>
       <Header />
-      <Tasks tasks={tasks} 
-      onDelete={deleteTask}/>
+      {tasks.length > 0 ? (
+      <Tasks tasks={tasks} onDelete={deleteTask}/>
+      ) : (
+        <h3 style={{textAlign : 'center'}}>No Tasks to Show!</h3>
+      )}
     </div>
   );
 }
