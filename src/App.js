@@ -34,11 +34,23 @@ const deleteTask = (id) => {
   //console.log('delete', id) //great way to test
   setTasks(tasks.filter((tasks) => tasks.id !== id))
 }
+
+// Toggle Reminder
+const toggleReminder = (id) => {
+  setTasks(
+    tasks.map((task) => //map the tasks state
+    task.id === id ? { ...task, reminder:
+    !task.reminder } : task
+    )
+  )
+}
+
   return (
     <div className='container'>
       <Header />
       {tasks.length > 0 ? (
-      <Tasks tasks={tasks} onDelete={deleteTask}/>
+      <Tasks tasks={tasks} onDelete={deleteTask}
+      onToggle={toggleReminder}/>
       ) : (
         <h3 style={{textAlign : 'center'}}>No Tasks to Show!</h3>
       )}
