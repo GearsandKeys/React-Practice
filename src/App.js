@@ -8,7 +8,11 @@ const App = () => {
   //here we cab declare variables and write javascript
   //const x = true;
   //const name = "Nathan"
+  const [showAddTask, setShowAddTask] = useState(false) //allows us to set showing the AddTask bool to true or false
   const [tasks, setTasks] = useState([ //tasks = default state below
+  
+
+
     //app level state
     {
         id: 1,
@@ -55,8 +59,11 @@ const toggleReminder = (id) => {
 
   return (
     <div className='container'>
-      <Header />
-      <AddTask onAdd={ addTask }/>
+      <Header onAdd={() => setShowAddTask(!showAddTask)} 
+      showAdd = { showAddTask }/>
+      
+      { showAddTask && <AddTask onAdd={ addTask }/>} 
+      {/*special ternary that doesn't use else, if showAddTask is true then show the AddTask component */}
       {tasks.length > 0 ? (
       <Tasks tasks={tasks} onDelete={deleteTask}
       onToggle={toggleReminder}/>
