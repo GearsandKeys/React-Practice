@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
@@ -10,6 +10,16 @@ const App = () => {
   //const name = "Nathan"
   const [showAddTask, setShowAddTask] = useState(false) //allows us to set showing the AddTask bool to true or false
   const [tasks, setTasks] = useState([])
+
+ useEffect(() => {
+   const fetchTasks = async () => {
+     const res = await fetch('http://localhost:5000/tasks') //res = response
+     const data = await res.json()
+
+     console.log(data)
+   }
+   fetchTasks()
+ }, []) //this bracket is for the dependencies 
 
 //Add Task
 const addTask = (task) => {
