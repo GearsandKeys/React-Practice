@@ -28,11 +28,32 @@ const fetchTasks = async () => {
   return data //returns it so it can be plugged in
 }
 
+//Fetch Task
+const fetchTask = async (id) => {
+  const res = await fetch(`http://localhost:5000/tasks`)
+  const data = await res.json()
+
+  return data
+}
+
 //Add Task
-const addTask = (task) => {
-  const id = Math.floor(Math.random() * 10000) + 1
-  const newTask = {id, ...task } //...task copies the original information
-  setTasks([...tasks, newTask]) //copies old tasks, then adds the new one.
+const addTask = async (task) => {
+  const res = await fetch('http://localhost:5000/tasks', {
+    method: 'POST',
+    headers: { //for adding data
+      'content-type': 'application/json' //have to specify content type
+    },
+    body: JSON.stringify(task) //turns JS object into json
+  })
+
+  const data = await res.json() //data becomes that response as a json
+
+  setTasks([...tasks, data]) //...tasks copies old tasks, data passes in new task to state
+
+  // old addTask method
+  // const id = Math.floor(Math.random() * 10000) + 1
+  // const newTask = {id, ...task } //...task copies the original information
+  // setTasks([...tasks, newTask]) //copies old tasks, then adds the new one.
 }
 
 //Delete Task
@@ -46,11 +67,24 @@ const addTask = (task) => {
 }
 
 // Toggle Reminder
-const toggleReminder = (id) => {
+const toggleReminder = async (id) => {
+const taskToggle = await fetchTasks(id)
+const updateTask = {...taskToggle, reminder: !taskToggle.reminder } //switches reminder to opposite when clicked
+
+const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+  method: 'PUT',
+  headers: {
+    'Content-type': 'application/json'
+  },
+  body: JSON.stringify(updateTask)
+})
+
+const data = await res.json()
+
   setTasks(
     tasks.map((task) => //map the tasks state
     task.id === id ? { ...task, reminder:
-    !task.reminder } : task
+    data.reminder } : task
     )
   )
 }
