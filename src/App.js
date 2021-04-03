@@ -12,14 +12,21 @@ const App = () => {
   const [tasks, setTasks] = useState([])
 
  useEffect(() => {
-   const fetchTasks = async () => {
-     const res = await fetch('http://localhost:5000/tasks') //res = response
-     const data = await res.json()
-
-     console.log(data)
+   const getTasks = async() => {
+    const tasksFromServer = await fetchTasks() //calls fetchTasks below and waits
+    setTasks(tasksFromServer) //then plugs that data into the setTasks function
    }
-   fetchTasks()
+
+   getTasks() //calls the above function
  }, []) //this bracket is for the dependencies 
+
+//Fetch Tasks
+const fetchTasks = async () => {
+  const res = await fetch('http://localhost:5000/tasks') //fetches the db from the localhost
+  const data = await res.json() //converts it to json
+
+  return data //returns it so it can be plugged in
+}
 
 //Add Task
 const addTask = (task) => {
@@ -29,9 +36,13 @@ const addTask = (task) => {
 }
 
 //Delete Task
-const deleteTask = (id) => {
+ const deleteTask = async (id) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, { //watch out for forgetting the semicolon
+      method: 'DELETE',
+    })
+
   //console.log('delete', id) //great way to test
-  setTasks(tasks.filter((tasks) => tasks.id !== id))
+  setTasks(tasks.filter((task) => task.id !== id))
 }
 
 // Toggle Reminder
